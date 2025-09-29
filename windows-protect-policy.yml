@@ -1,0 +1,33 @@
+id: windows-protect-policy-01
+name: Windows Production Protection
+description: "Comprehensive security policy for Windows 10 endpoints."
+namespace: default
+agent_id: auto-assigned
+is_default: false
+
+inputs:
+  - type: system/metrics
+    enabled: true
+  - type: windows/metrics
+    enabled: true
+  - type: winlog
+    enabled: true
+    streams:
+      - event_id: 4624, 4625 # Logon/Logoff events
+        name: security
+      - event_id: 4688 # Process Creation events
+        name: security
+
+integrations:
+  endpoint:
+    enabled: true
+    version: 1.0.0
+    config:
+      policy:
+        protections:
+          malware:
+            mode: "protect" # Set to prevent and block malware
+          ransomware:
+            mode: "protect"
+          memory_threats:
+            mode: "protect"
